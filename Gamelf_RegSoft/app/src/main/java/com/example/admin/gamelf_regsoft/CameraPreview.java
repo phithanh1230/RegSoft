@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.media.Image;
+import android.os.Handler;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -17,6 +19,7 @@ import android.view.Gravity;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +41,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Context mContext;
     int index=0;
     String prevRes=null;
+    private boolean isStop=false,isText=true,isSound=true;
     private boolean isProcessingFrame = false;
+    Bitmap bitmap;
     /**/
     private static final int INPUT_SIZE = 224;
     private static final int IMAGE_MEAN = 117;
@@ -50,7 +55,32 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
     TextToSpeech textToSpeech;
+    private boolean isUS=true;
+    int timetoast=500;
+    int confident=0;
     /**/
+    public void setIsStop(boolean c)
+    {
+        isStop=c;
+    }
+    public void setIsText(boolean c)
+    {
+        isText=c;
+    }
+    public void setIsSound(boolean c)
+    {
+        isSound=c;
+    }
+
+    public void setTimetoast(int a)
+    {
+        timetoast=a;
+    }
+    public void setConfident(int a)
+    {
+        confident=a;
+    }
+
     public CameraPreview(Context context, Camera camera) {
         super(context);
         mContext=context;
@@ -60,46 +90,22 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
     }
-    public static void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
-        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
-        android.hardware.Camera.getCameraInfo(cameraId, info);
-        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int degrees = 0;
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                degrees = 0;
-                break;
-            case Surface.ROTATION_90:
-                degrees = 90;
-                break;
-            case Surface.ROTATION_180:
-                degrees = 180;
-                break;
-            case Surface.ROTATION_270:
-                degrees = 270;
-                break;
-        }
 
-        int result;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            result = (info.orientation + degrees) % 360;
-            result = (360 - result) % 360;
-        } else {
-            result = (info.orientation - degrees + 360) % 360;
-        }
-        camera.setDisplayOrientation(result);
-    }
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        try{
-            setCameraDisplayOrientation((Activity)mContext, Camera.CameraInfo.CAMERA_FACING_BACK, mCamera);
-            mCamera.setPreviewDisplay(surfaceHolder);
-            initTensorFlowAndLoadModel();
-            mCamera.setPreviewCallback(this);
-            mCamera.startPreview();
-        } catch (IOException e) {
-            Log.d("ERROR", "Camera error on surfaceCreated " + e.getMessage());
-        }
+
+    }
+    public void setUS(boolean c)
+    {
+        isUS=c;
+    }
+
+    public void setChangeVoice(boolean c)
+    {
+        if(c)
+            textToSpeech.setLanguage(Locale.US);
+        else
+            textToSpeech.setLanguage(Locale.UK);
     }
     private void initSpeakText()
     {
@@ -107,7 +113,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             @Override
             public void onInit(int i) {
                 if(i!=TextToSpeech.ERROR){
-                    textToSpeech.setLanguage(Locale.US);
+                    setChangeVoice(isUS);
                     textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                         @Override
                         public void onStart(String s) {
@@ -127,6 +133,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         });
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         if(mHolder.getSurface() == null)
@@ -151,6 +158,99 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+    }
+    @Override
+    public void onPreviewFrame(final byte[] bytes, final Camera camera) {
+        if(isProcessingFrame) return;
+        /**/
+            Camera.Parameters parameters = camera.getParameters();
+            int width = parameters.getPreviewSize().width;
+            int height = parameters.getPreviewSize().height;
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Allocation bmData = renderScriptNV21ToRGBA888(
+                    mContext,
+                    width,
+                    height,
+                    bytes);
+            bmData.copyTo(bitmap);
+            bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+        /**/
+        if(!isStop) {
+            processImage(bitmap);
+        }
+    }
+    public void processTake(ImageView img, TextView txtObject, TextView txtConfident,TextView txtOther)
+    {
+        img.setImageBitmap(bitmap);
+        try {
+            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+            if(results.size()>0)
+            {
+                txtObject.setText(results.get(0).toString());
+                txtConfident.setText((results.get(0).getConfidence()*100)+"%");
+                if(results.size()>1)
+                {
+                    String s="";
+                    for(int i=1;i<results.size();i++)
+                    {
+                        s+=results.get(i).getTitle()+"( "+(results.get(i).getConfidence()*100)+" )"+", ";
+                    }
+                    txtOther.setText(s);
+                }
+
+            }
+            else
+            {
+                txtObject.setText("Cant Regconize objects");
+                txtConfident.setText("0%");
+                txtOther.setText("Please get camera closer to objects");
+            }
+        }catch (Exception e)
+        {
+            Log.d("DEBUG",e.toString());
+        }
+    }
+
+    private void processImage(Bitmap bitmap) {
+
+        try {
+            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+            if(results.size()>0 && results.get(0).getConfidence()>confident)
+            {
+                String res= results.get(0).toString();
+                if(!res.equals(prevRes)) {
+                   // Log.d("DEBUG", res+"/"+prevRes);
+                    String toSpeak = res;
+                    if(isSound) {
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
+                        textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, map);
+                    }
+                    prevRes = toSpeak;
+                    if(isText) {
+                        final Toast t = Toast.makeText(mContext, prevRes, Toast.LENGTH_SHORT);
+                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        t.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                t.cancel();
+                            }
+                        },timetoast);
+                    }
+                    //txtResult.setText(toSpeak);
+                }
+            }
+        }catch (Exception e)
+        {
+            Log.d("DEBUG",e.toString());
+        }
+    }
+
+    public void close()
+    {
         mCamera.stopPreview();
         mCamera.setPreviewCallback(null);
         mCamera.release();
@@ -167,47 +267,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         });
     }
-    @Override
-    public void onPreviewFrame(final byte[] bytes, final Camera camera) {
-        if(isProcessingFrame) return;
-        /**/
-        Camera.Parameters parameters = camera.getParameters();
-        int width = parameters.getPreviewSize().width;
-        int height = parameters.getPreviewSize().height;
-        Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
-        Allocation bmData = renderScriptNV21ToRGBA888(
-                mContext,
-                width,
-                height,
-                bytes);
-        bmData.copyTo(bitmap);
-        bitmap = Bitmap.createScaledBitmap(bitmap,INPUT_SIZE,INPUT_SIZE,false);
-        /**/
-        processImage(bitmap);
-    }
-    private void processImage(Bitmap bitmap) {
-
-        try {
-            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-            if(results.size()>0)
-            {
-                String res= results.get(0).toString();
-                if(!res.equals(prevRes)) {
-                    Log.d("DEBUG", res+"/"+prevRes);
-                    String toSpeak = res;
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
-                    textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, map);
-                    prevRes = toSpeak;
-                    //txtResult.setText(toSpeak);
-                }
-            }
-        }catch (Exception e)
-        {
-            Log.d("DEBUG",e.toString());
-        }
-    }
-
     public Allocation renderScriptNV21ToRGBA888(Context context, int width, int height, byte[] nv21) {
         RenderScript rs = RenderScript.create(context);
         ScriptIntrinsicYuvToRGB yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs));

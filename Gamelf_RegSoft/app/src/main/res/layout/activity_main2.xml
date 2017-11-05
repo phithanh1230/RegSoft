@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.admin.gamelf_regsoft.Main2Activity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="250dp"
+        android:layout_weight="1"
+        android:text="* Độ tin cậy càng lớn thì càng chính xác, bù lại sẽ khó dò tìm thấy được đồ vật hơn" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="80dp"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Thời gian hiển thị văn bản (ms)"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Chỉ hiển thị đồ vật có độ tin cậy lớn hơn (%)"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etxtConfident"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Nhập số độ tin cậy"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="160dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Chọn chuẩn phát âm"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:id="@+id/rdbGroup"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rdbUS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="US (Giọng Mỹ)" />
+
+            <RadioButton
+                android:id="@+id/rdbUK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="UK (Giọng Anh)" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="450dp"
+        android:background="@drawable/circle_shape"
+        android:text="Apply" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="195dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="450dp"
+        android:background="@drawable/circle_shape"
+        android:text="Cancel" />
+
+    <EditText
+        android:id="@+id/etxttimetoast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="Nhập thời gian hiển thị (default: 500ms)"
+        android:inputType="number" />
+
+</RelativeLayout>
