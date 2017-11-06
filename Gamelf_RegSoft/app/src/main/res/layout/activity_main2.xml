@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,17 +11,46 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="* Độ tin cậy càng lớn thì càng chính xác, bù lại sẽ khó dò tìm thấy được đồ vật hơn" />
+        android:text="* Độ tin cậy càng lớn thì càng chính xác, bù lại sẽ khó dò tìm thấy được đồ vật hơn"
+        android:textColor="#3f017c"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.053" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:text="* Thời gian hiển thị văn bản càng lâu càng làm tăng độ trễ cho chương trình"
+        android:textColor="#3f017c"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.072" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
-        android:id="@+id/linearLayout">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:layout_width="match_parent"
@@ -30,14 +59,35 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:text="Thời gian hiển thị văn bản (ms)"
-            android:textSize="18sp" />
+            android:textColor="#3f017c"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etxttimetoast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/linearLayout"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Nhập thời gian hiển thị (default: 500ms)"
+            android:inputType="number"
+            android:textColor="#3f017c" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:layout_width="match_parent"
@@ -46,7 +96,9 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:text="Chỉ hiển thị đồ vật có độ tin cậy lớn hơn (%)"
-            android:textSize="18sp" />
+            android:textColor="#3f017c"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etxtConfident"
@@ -55,15 +107,22 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Nhập số độ tin cậy"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColor="#3f017c" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginTop="160dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048">
 
         <TextView
             android:layout_width="match_parent"
@@ -72,7 +131,9 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:text="Chọn chuẩn phát âm"
-            android:textSize="18sp" />
+            android:textColor="#3f017c"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/rdbGroup"
@@ -86,46 +147,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="US (Giọng Mỹ)" />
+                android:text="US (Giọng Mỹ)"
+                android:textColor="#3f017c" />
 
             <RadioButton
                 android:id="@+id/rdbUK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="UK (Giọng Anh)" />
+                android:text="UK (Giọng Anh)"
+                android:textColor="#3f017c" />
         </RadioGroup>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnApply"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="450dp"
-        android:background="@drawable/circle_shape"
-        android:text="Apply" />
-
-    <Button
         android:id="@+id/btnCancel"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="195dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="450dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="32dp"
         android:background="@drawable/circle_shape"
-        android:text="Cancel" />
+        android:text="Cancel"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnApply" />
 
-    <EditText
-        android:id="@+id/etxttimetoast"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/linearLayout"
-        android:layout_alignParentStart="true"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="Nhập thời gian hiển thị (default: 500ms)"
-        android:inputType="number" />
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/circle_shape"
+        android:text="Apply"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.261"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main2Activity" />
-        <activity android:name=".GuideActivity"></activity>
+        <activity android:name=".GuideActivity" />
+        <activity android:name=".load" />
+        <activity android:name=".reginlinkActivity"></activity>
     </application>
 
 </manifest>

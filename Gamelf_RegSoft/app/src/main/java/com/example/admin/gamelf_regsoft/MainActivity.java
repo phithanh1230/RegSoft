@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,8 +27,8 @@ import java.net.URI;
 public class MainActivity extends Activity implements View.OnClickListener {
     private Camera mCamera = null;
     private CameraPreview mCameraView = null;
-    Animation anim,anim2;
-    ImageButton btnSetting,btnSound,btnText,btnRealtime,btnExit,btnChup,btnCustom,btnHelp;
+    Animation anim,anim2,anim3;
+    ImageButton btnSetting,btnSound,btnText,btnRealtime,btnExit,btnChup,btnCustom,btnHelp,btnUpload;
     ImageView imgAnh;
     TextView txtObject,txtConfident,txtOther,txtInfo;
     Button btnOK;
@@ -41,9 +42,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent i = new Intent(this,load.class);
+        startActivity(i);
         initSystem();
         anim= AnimationUtils.loadAnimation(this,R.anim.floatout);
         anim2=AnimationUtils.loadAnimation(this,R.anim.flyout);
+        anim3=AnimationUtils.loadAnimation(this,R.anim.flyin);
         try{
             mCamera = Camera.open();
         } catch (Exception e){
@@ -94,6 +98,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnChup=findViewById(R.id.btnChup);
         btnOK=findViewById(R.id.btnOK);
         btnCustom=findViewById(R.id.btnCustom);
+        btnUpload=findViewById(R.id.btnUpload);
         btnHelp=findViewById(R.id.btnHelp);
         layout_Chup=findViewById(R.id.layout_show_info);
         txtOther=findViewById(R.id.txtOthers);
@@ -103,6 +108,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         imgAnh=findViewById(R.id.imgObject);
         //-------------------------------------------
         btnChup.setVisibility(View.GONE);
+        btnUpload.setVisibility(View.GONE);
         layout_Chup.setVisibility(View.GONE);
         //-------------------------------------------
         btnSetting.setOnClickListener(this);
@@ -114,6 +120,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnChup.setOnClickListener(this);
         btnCustom.setOnClickListener(this);
         btnHelp.setOnClickListener(this);
+        btnUpload.setOnClickListener(this);
     }
 
     @Override
@@ -147,6 +154,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     btnSound.setVisibility(View.INVISIBLE);
                     btnText.setVisibility(View.INVISIBLE);
                     btnChup.setVisibility(View.VISIBLE);
+                    btnUpload.setVisibility(View.VISIBLE);
                 }
                 else{
                    // s="Realtime mode turned ON";
@@ -155,6 +163,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     btnText.setVisibility(View.VISIBLE);
                     btnChup.setVisibility(View.INVISIBLE);
                     layout_Chup.setVisibility(View.INVISIBLE);
+                    btnUpload.setVisibility(View.INVISIBLE);
                 }
                 //Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
                 break;
@@ -189,6 +198,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btnChup:
                 layout_Chup.setVisibility(View.VISIBLE);
+                layout_Chup.startAnimation(anim3);
                 txtObject.setText("");
                 txtConfident.setText("");
                 txtOther.setText("");
@@ -203,10 +213,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btnHelp:
                 doOpenHelp();
                 break;
+            case R.id.btnUpload:
+                doUploadButton();
         }
 
     }
 
+    /**/
+    private void doUploadButton() {
+        
+    }
+
+    class ImageTask extends AsyncTask<String,Void,Bitmap>{
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            return null;
+        }
+    }
+    /**/
     private void doOpenHelp() {
         Intent intent = new Intent(MainActivity.this, GuideActivity.class);
         startActivity(intent);

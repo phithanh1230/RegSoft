@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
     </FrameLayout>
 
@@ -23,8 +25,14 @@
         android:layout_height="125dp"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="true"
-        android:background="@android:color/darker_gray"
-        android:orientation="horizontal">
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#DD3f017c"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imgObject"
@@ -47,7 +55,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:text="This is Computer keyboard"
-                android:textColor="@color/colorAccent"
+                android:textColor="@android:color/background_light"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -58,38 +66,72 @@
                 android:layout_marginLeft="10dp"
                 android:text="50%"
                 android:textColor="@android:color/holo_green_dark"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textSize="16sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/txtOthers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:paddingBottom="5dp"
                 android:text="Mouse, Cat, laptop"
-                android:textSize="12sp" />
+                android:textColor="@android:color/background_light"
+                android:textSize="12sp"
+                android:textStyle="italic" />
 
             <Button
                 android:id="@+id/btnOK"
                 style="@style/Widget.AppCompat.Button"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Close" />
+                android:background="#3f017c"
+                android:text="Close"
+                android:textColor="@android:color/background_light" />
         </LinearLayout>
 
     </LinearLayout>
 
     <ImageButton
         android:id="@+id/btnChup"
-        android:layout_width="100dp"
+        android:layout_width="96dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="275dp"
-        android:layout_marginLeft="125dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/circle_shape"
-        android:src="@drawable/camera" />
+        android:src="@drawable/camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnSetting"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/btnSetting"
+        android:background="@drawable/circle_shape"
+        android:src="@drawable/sound_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSetting" />
+
+    <ImageButton
+        android:id="@+id/btnUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/circle_shape"
+        android:src="@drawable/upload"
+        app:layout_constraintEnd_toStartOf="@+id/btnChup"
+        tools:layout_editor_absoluteY="271dp" />
 
     <ImageButton
         android:id="@+id/btnCustom"
@@ -97,10 +139,13 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/circle_shape"
         android:scaleType="centerCrop"
-        android:src="@drawable/custom" />
+        android:src="@drawable/custom"
+        app:layout_constraintBottom_toTopOf="@+id/btnSetting"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btnHelp"
@@ -108,10 +153,13 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="167dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/circle_shape"
         android:scaleType="centerCrop"
-        android:src="@drawable/help" />
+        android:src="@drawable/help"
+        app:layout_constraintBottom_toTopOf="@+id/btnCustom"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btnSetting"
@@ -119,19 +167,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="17dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/circle_shape"
-        android:src="@drawable/less" />
-
-    <ImageButton
-        android:id="@+id/btnSound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnSetting"
-        android:layout_marginStart="23dp"
-        android:layout_toEndOf="@+id/btnSetting"
-        android:background="@drawable/circle_shape"
-        android:src="@drawable/sound_on" />
+        android:src="@drawable/less"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btnText"
@@ -139,10 +180,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="17dp"
-        android:layout_marginLeft="150dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/circle_shape"
-        android:src="@drawable/text_on" />
+        android:src="@drawable/text_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSound" />
 
     <ImageButton
         android:id="@+id/btnRealtime"
@@ -150,10 +193,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="17dp"
-        android:layout_marginLeft="225dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/circle_shape"
-        android:src="@drawable/eyeon" />
+        android:src="@drawable/eyeon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnText" />
 
     <ImageButton
         android:id="@+id/btnExit"
@@ -161,19 +206,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="17dp"
-        android:layout_marginLeft="300dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/circle_shape"
-        android:src="@drawable/close" />
+        android:src="@drawable/close"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnRealtime" />
 
     <TextView
         android:id="@+id/txtInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="510dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Voice: US | Time: 500ms | Confident: 0%"
+        android:textColor="#3f017c"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnCustom"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.864" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

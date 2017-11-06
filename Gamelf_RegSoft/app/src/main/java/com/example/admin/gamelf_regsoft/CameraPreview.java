@@ -211,6 +211,37 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.d("DEBUG",e.toString());
         }
     }
+    public void processTake(ImageView img, TextView txtObject, TextView txtConfident,TextView txtOther,Bitmap bm)
+    {
+        img.setImageBitmap(bm);
+        try {
+            final List<Classifier.Recognition> results = classifier.recognizeImage(bm);
+            if(results.size()>0)
+            {
+                txtObject.setText(results.get(0).toString());
+                txtConfident.setText((results.get(0).getConfidence()*100)+"%");
+                if(results.size()>1)
+                {
+                    String s="";
+                    for(int i=1;i<results.size();i++)
+                    {
+                        s+=results.get(i).getTitle()+"( "+(results.get(i).getConfidence()*100)+" )"+", ";
+                    }
+                    txtOther.setText(s);
+                }
+
+            }
+            else
+            {
+                txtObject.setText("Cant Regconize objects");
+                txtConfident.setText("0%");
+                txtOther.setText("Please get camera closer to objects");
+            }
+        }catch (Exception e)
+        {
+            Log.d("DEBUG",e.toString());
+        }
+    }
 
     private void processImage(Bitmap bitmap) {
 

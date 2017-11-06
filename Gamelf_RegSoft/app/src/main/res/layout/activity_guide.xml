@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="65dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#3f017c"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
         android:layout_weight="0"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageView
             android:id="@+id/imageView6"
@@ -28,16 +47,23 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
             android:layout_weight="3.29"
             android:text="Bật/tắt âm thanh"
             android:textAlignment="viewStart"
+            android:textColor="#3f017c"
             android:textSize="18sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.187">
 
         <ImageView
             android:id="@+id/imageView5"
@@ -53,15 +79,22 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
             android:layout_weight="0.85"
             android:text="Hiện/Ẩn thanh cài đặt"
             android:textAlignment="viewStart"
+            android:textColor="#3f017c"
             android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.317">
 
         <ImageView
             android:id="@+id/imageView4"
@@ -77,6 +110,7 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
             android:layout_weight="1"
             android:text="Cài đặt nâng cao"
             android:textAlignment="viewStart"
+            android:textColor="#3f017c"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -84,13 +118,19 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.716">
 
         <ImageView
             android:id="@+id/imageView7"
-            android:layout_width="40dp"
+            android:layout_width="51dp"
             android:layout_height="40dp"
             android:layout_weight="0.16"
             android:src="@drawable/close" />
@@ -101,6 +141,7 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
             android:layout_height="match_parent"
             android:layout_weight="1.51"
             android:text="Thoát"
+            android:textColor="#3f017c"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -108,9 +149,15 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.447">
 
         <ImageView
             android:id="@+id/imageView8"
@@ -125,6 +172,7 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
             android:layout_height="match_parent"
             android:layout_weight="1.28"
             android:text="Bật/tắt chế độ real-time"
+            android:textColor="#3f017c"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -132,9 +180,15 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.58">
 
         <ImageView
             android:id="@+id/imageView9"
@@ -149,17 +203,23 @@ tools:context="com.example.admin.gamelf_regsoft.GuideActivity">
             android:layout_height="match_parent"
             android:layout_weight="1.28"
             android:text="Bật/tắt hiển thị văn bản"
+            android:textColor="#3f017c"
             android:textSize="18sp" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btnThoat"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_weight="0.03"
         android:background="@drawable/circle_shape"
-        android:text="OK" />
-</LinearLayout>
+        android:text="OK"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>
