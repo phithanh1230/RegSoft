@@ -162,8 +162,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     btnSound.setVisibility(View.VISIBLE);
                     btnText.setVisibility(View.VISIBLE);
                     btnChup.setVisibility(View.INVISIBLE);
-                    layout_Chup.setVisibility(View.INVISIBLE);
-                    btnUpload.setVisibility(View.INVISIBLE);
+                    layout_Chup.setVisibility(View.GONE);
+                    btnUpload.setVisibility(View.GONE);
                 }
                 //Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
                 break;
@@ -221,15 +221,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     /**/
     private void doUploadButton() {
-        
-    }
-
-    class ImageTask extends AsyncTask<String,Void,Bitmap>{
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            return null;
-        }
+        Intent i = new Intent(this, reginlinkActivity.class);
+        startActivity(i);
     }
     /**/
     private void doOpenHelp() {

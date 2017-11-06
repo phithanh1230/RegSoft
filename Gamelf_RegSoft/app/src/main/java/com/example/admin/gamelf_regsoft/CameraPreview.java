@@ -45,15 +45,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private boolean isProcessingFrame = false;
     Bitmap bitmap;
     /**/
-    private static final int INPUT_SIZE = 224;
-    private static final int IMAGE_MEAN = 117;
-    private static final float IMAGE_STD = 1;
-    private static final String INPUT_NAME = "input";
-    private static final String OUTPUT_NAME = "output";
-    private static final String MODEL_FILE = "file:///android_asset/tensorflow_inception_graph.pb";
-    private static final String LABEL_FILE = "file:///android_asset/imagenet_comp_graph_label_strings.txt";
-    private Classifier classifier;
-    private Executor executor = Executors.newSingleThreadExecutor();
+    Recognize_Class reg;
+    /**/
+
     TextToSpeech textToSpeech;
     private boolean isUS=true;
     int timetoast=500;
@@ -145,7 +139,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
         try{
             mCamera.setPreviewDisplay(mHolder);
-            initTensorFlowAndLoadModel();
+            reg=new Recognize_Class(mContext);
+            reg.initTensorFlowAndLoadModel();
             initSpeakText();
             mCamera.setPreviewCallback(this);
             mCamera.startPreview();
@@ -168,13 +163,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             int width = parameters.getPreviewSize().width;
             int height = parameters.getPreviewSize().height;
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            Allocation bmData = renderScriptNV21ToRGBA888(
+            Allocation bmData = reg.renderScriptNV21ToRGBA888(
                     mContext,
                     width,
                     height,
                     bytes);
             bmData.copyTo(bitmap);
-            bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+            bitmap = Bitmap.createScaledBitmap(bitmap, reg.INPUT_SIZE, reg.INPUT_SIZE, false);
         /**/
         if(!isStop) {
             processImage(bitmap);
@@ -184,7 +179,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     {
         img.setImageBitmap(bitmap);
         try {
-            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+            final List<Classifier.Recognition> results = reg.classifier.recognizeImage(bitmap);
             if(results.size()>0)
             {
                 txtObject.setText(results.get(0).toString());
@@ -194,38 +189,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     String s="";
                     for(int i=1;i<results.size();i++)
                     {
-                        s+=results.get(i).getTitle()+"( "+(results.get(i).getConfidence()*100)+" )"+", ";
-                    }
-                    txtOther.setText(s);
-                }
-
-            }
-            else
-            {
-                txtObject.setText("Cant Regconize objects");
-                txtConfident.setText("0%");
-                txtOther.setText("Please get camera closer to objects");
-            }
-        }catch (Exception e)
-        {
-            Log.d("DEBUG",e.toString());
-        }
-    }
-    public void processTake(ImageView img, TextView txtObject, TextView txtConfident,TextView txtOther,Bitmap bm)
-    {
-        img.setImageBitmap(bm);
-        try {
-            final List<Classifier.Recognition> results = classifier.recognizeImage(bm);
-            if(results.size()>0)
-            {
-                txtObject.setText(results.get(0).toString());
-                txtConfident.setText((results.get(0).getConfidence()*100)+"%");
-                if(results.size()>1)
-                {
-                    String s="";
-                    for(int i=1;i<results.size();i++)
-                    {
-                        s+=results.get(i).getTitle()+"( "+(results.get(i).getConfidence()*100)+" )"+", ";
+                        s+=results.get(i).getTitle()+", ";
                     }
                     txtOther.setText(s);
                 }
@@ -246,7 +210,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private void processImage(Bitmap bitmap) {
 
         try {
-            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+            final List<Classifier.Recognition> results = reg.classifier.recognizeImage(bitmap);
             if(results.size()>0 && results.get(0).getConfidence()>confident)
             {
                 String res= results.get(0).toString();
@@ -271,67 +235,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                             }
                         },timetoast);
                     }
-                    //txtResult.setText(toSpeak);
                 }
             }
         }catch (Exception e)
         {
             Log.d("DEBUG",e.toString());
         }
-    }
-
-    public void close()
-    {
-        mCamera.stopPreview();
-        mCamera.setPreviewCallback(null);
-        mCamera.release();
-        mCamera=null;
-        if(textToSpeech!=null)
-        {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-        }
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                classifier.close();
-            }
-        });
-    }
-    public Allocation renderScriptNV21ToRGBA888(Context context, int width, int height, byte[] nv21) {
-        RenderScript rs = RenderScript.create(context);
-        ScriptIntrinsicYuvToRGB yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs));
-
-        Type.Builder yuvType = new Type.Builder(rs, Element.U8(rs)).setX(nv21.length);
-        Allocation in = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT);
-
-        Type.Builder rgbaType = new Type.Builder(rs, Element.RGBA_8888(rs)).setX(width).setY(height);
-        Allocation out = Allocation.createTyped(rs, rgbaType.create(), Allocation.USAGE_SCRIPT);
-
-        in.copyFrom(nv21);
-
-        yuvToRgbIntrinsic.setInput(in);
-        yuvToRgbIntrinsic.forEach(out);
-        return out;
-    }
-    private void initTensorFlowAndLoadModel() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    classifier = TensorFlowImageClassifier.create(
-                            mContext.getAssets(),
-                            MODEL_FILE,
-                            LABEL_FILE,
-                            INPUT_SIZE,
-                            IMAGE_MEAN,
-                            IMAGE_STD,
-                            INPUT_NAME,
-                            OUTPUT_NAME);
-                } catch (final Exception e) {
-                    throw new RuntimeException("Error initializing TensorFlow!", e);
-                }
-            }
-        });
     }
 }
